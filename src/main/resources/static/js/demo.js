@@ -2,10 +2,8 @@
 
 //默认配置
 var DEFAULT_CONFIG = {
-    'api_host': "http://localhost:8080/",
-    //'app_host': HTTP_PROTOCOL + 'mixpanel.com',
+    'api_host': "http://localhost:8989/",
     'autoTrace': true, // 是否打开全埋点监测
-    //'cdn': HTTP_PROTOCOL + 'cdn.mxpnl.com',
     'detectComponent': ["a","button","input[type='button']"],//监测的组件
     'detectId': ["1"],//根据id选择器监测
     'cache' : 0
@@ -41,6 +39,8 @@ var DEFAULT_CONFIG = {
             window.rpc.getKey = getKey;
             window.rpc.trace = trace;
             window.rpc.identify = identify;
+            window.rpc.register = register;
+            window.rpc.login = login;
             len = window.rpc.length;
             for (var i = 0; i < len; i++) {
                 var method = eval(window.rpc[0][0]);
@@ -59,6 +59,10 @@ if(window.rpc.config["autoTrace"] == true){
         var component = window.rpc.config["detectComponent"][i];
         $(component).bind("click",detector(component,"click"));
     }
+    for(var i in window.rpc.config["detectId"]){
+        var componentId = window.rpc.config["detectId"][i];
+        $("#"+componentId).bind("click",detectorById(componentId,"click"));
+    }
 }
 
 /**
@@ -70,6 +74,11 @@ if(window.rpc.config["autoTrace"] == true){
 function detector(component,type) {
     return function () {
         sent(new Component(GetUrlRelativePath().toString(),component,$(this).text(),type,new Date()),'/component');
+    }
+}
+function detectorById(component,type) {
+    return function () {
+        sent(new ComponentId(GetUrlRelativePath().toString(),$(this).text(),component,new Date()),'/componentId');
     }
 }
 /**
@@ -93,29 +102,41 @@ function check(o) {
     return result.responseText == 'true'?true:false;
 }
 
-function Component(loaction,componentType,componentName,event,time) {
-    this.location = loaction;
+function Component(location,componentType,componentName,event,time) {
+    this.appKey = window.rpc.appKey;
+    this.userId = window.rpc.userId;
+    this.location = location;
     this.componentType = componentType;
     this.componentName = componentName;
     this.event = event;
     this.time = time;
 }
-
+function ComponentId(location,componentName,componentId,time) {
+    this.appKey = window.rpc.appKey;
+    this.userId = window.rpc.userId;
+    this.location = location;
+    this.componentName = componentName;
+    this.componentId = componentId;
+    this.time = time;
+}
 /**
  * 初始化并标识用户(未完成)
  * @param id
+ * @param userInfo
  */
-function identify(id) {
-    window.rpc.userId = id;
-
+function identify(id,userInfo) {
+    window.rpc.userId = arguments[0][0];
+    sent(new UserInfo(arguments[0][1]),"/userInfo");
 }
 
 /**
  * 网站用户
  */
-function User(id,userInfo) {
-    this.id = id;
+function UserInfo(userInfo) {
+    this.appKey = window.rpc.appKey;
+    this.userId = getUserId();
     this.userInfo = userInfo;
+    this.time = new Date();
 }
 
 /**
@@ -129,6 +150,7 @@ function getUserId() {
  * 记录pageview的实体
  */
 function PageView(ip,url,time){
+    this.appKey = window.rpc.appKey,
     this.userId = getUserId(),
     this.userIp = ip,
     this.pageUrl = url,
@@ -142,9 +164,10 @@ function PageView(ip,url,time){
  * @constructor
  */
 function Leave(url,time) {
-    this.userId = getUserId(),
-    this.pageUrl = url,
-    this.time = time
+    this.appKey = window.rpc.appKey;
+    this.userId = getUserId();
+    this.pageUrl = url;
+    this.time = time;
 }
 
 /*
@@ -153,7 +176,7 @@ function Leave(url,time) {
 function CustomEvent(eventName,eventInfo){
     this.appKey = window.rpc.appKey,
     this.userId = getUserId(),
-    this.eventName = eventName,
+    this.customEventName = eventName,
     this.eventInfo = eventInfo,
     this.time = new Date()
 }
@@ -199,7 +222,22 @@ window.onbeforeunload = function() {
 function trace(eventName) {
     sent([new CustomEvent(arguments[0][0],arguments[0][1])],"/customEvent");
 }
-
+function Register(time) {
+    this.clientId = window.rpc.appKey;
+    this.userId = window.rpc.userId;
+    this.time = time;
+}
+function register() {
+    sent(new Register(new Date()),"/registerEvent");
+}
+function Login(time) {
+    this.clientId = window.rpc.appKey;
+    this.userId = window.rpc.userId;
+    this.time = time;
+}
+function login() {
+    sent(new Login(new Date()),"/loginEvent");
+}
 /*
  * 获取页面的URL
  */

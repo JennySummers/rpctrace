@@ -16,10 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author sxp
- * @create 2019-02-15 22:24
- **/
 @Document(collection = "CustomEvent")
 public class CustomEvent implements Serializable{
 
@@ -31,9 +27,8 @@ public class CustomEvent implements Serializable{
     @JsonProperty("appKey")
     private String clientId;
     private int userId;
-    @JsonProperty("eventName")
-    private String CustomEventName
-            ;
+    @JsonProperty("customEventName")
+    private String customEventName;
     private Map eventInfo = new HashMap();
     //@JsonFormat(pattern = "yy-MM-dd HH-mm-ss",timezone = "GMT+8")
     //@JsonIgnore
@@ -42,7 +37,7 @@ public class CustomEvent implements Serializable{
     private Date time;
 
     public ObjectId getEventId() {
-        return eventId;
+         return eventId;
     }
 
     public void setEventId(ObjectId eventId) {
@@ -71,7 +66,7 @@ public class CustomEvent implements Serializable{
     public String toString() {
         return "CustomEvent{" +
                 "userId=" + userId +
-                ", CustomEventName='" + CustomEventName + '\'' +
+                ", customEventName='" + customEventName + '\'' +
                 ", eventInfo=" + eventInfo +
                 ", time=" + time +
                 '}';
@@ -88,11 +83,11 @@ public class CustomEvent implements Serializable{
 
 
     public String getCustomEventName() {
-        return CustomEventName;
+        return customEventName;
     }
 
     public void setCustomEventName(String CustomEventName) {
-        this.CustomEventName = CustomEventName;
+        this.customEventName = CustomEventName;
     }
 
     public Map getEventInfo() {

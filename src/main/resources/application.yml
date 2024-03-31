@@ -1,14 +1,10 @@
 spring:
   application:
-    name: hadoop
+    name: RPCtrace
   thymeleaf:
     cache: false
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/sxpdb
-#server:
-#  port: 9000
-
-#hdfs:
-#  path: hdfs://47.101.46.0:9000
-#  username: root
+      uri: mongodb://localhost:27017/rpc
+  cache:
+    type: redis

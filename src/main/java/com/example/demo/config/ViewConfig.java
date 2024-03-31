@@ -13,9 +13,16 @@ public class ViewConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        //registry.addViewController("/").setViewName("login");
-        registry.addViewController("/toLogin").setViewName("login");
-        registry.addViewController("/main").setViewName("main");
-        registry.addViewController("/dash").setViewName("dashboard");
+        registry.addViewController("/loginPage").setViewName("login");
+        registry.addViewController("/" +
+                "").setViewName("index");
+        registry.addViewController("/register").setViewName("register");
+        registry.addViewController("/test").setViewName("test");
+        registry.addViewController("/user").setViewName("user");
+        registry.addViewController("/page").setViewName("page");
+        registry.addViewController("/custom").setViewName("custom");
+        registry.addViewController("/componentPage").setViewName("component");
+        registry.addViewController("/index").setViewName("index");
+
     }
 }

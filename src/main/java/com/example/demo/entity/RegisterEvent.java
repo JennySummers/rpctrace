@@ -8,10 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author sxp
- * @create 2019-03-05 16:48
- **/
+
 @Document(collection = "RegisterEvent")
 public class RegisterEvent implements Serializable {
 

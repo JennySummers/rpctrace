@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,10 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author sxp
- * @create 2019-02-02 17:31
- **/
+
 @Document(collection = "PageView")
 public class PageView implements Serializable {
 
@@ -19,13 +17,45 @@ public class PageView implements Serializable {
 
     @Id
     private ObjectId eventId;
+    /**
+     * 事件名
+     */
     private String eventName;
+    /**
+     * appKey
+     */
+    @JsonProperty("appKey")
     private String clientId;
+    /**
+     * 页面标识
+     */
     private String pageUrl;
+    /**
+     * 用户ip
+     */
     private String userIp;
+    /**
+     * 用户id
+     */
     private int userId;
+    /**
+     * 载入时间
+     */
     @DateTimeFormat(pattern = "yy-MM-dd HH-mm-ss E")
     private Date time;
+    /**
+     * 离开时间
+     */
+    @DateTimeFormat(pattern = "yy-MM-dd HH-mm-ss E")
+    private Date endTime;
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public ObjectId getEventId() {
         return eventId;
@@ -50,8 +80,6 @@ public class PageView implements Serializable {
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
-
-
 
     public PageView(String pageUrl, String userIp, int userId, Date time) {
         this.pageUrl = pageUrl;

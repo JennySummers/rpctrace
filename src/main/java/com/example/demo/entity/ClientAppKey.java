@@ -6,16 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-/**
- * @author sxp
- * @create 2019-03-05 19:23
- **/
 @Document(collection = "ClientAppKey")
 public class ClientAppKey implements Serializable {
 
     @Id
     private ObjectId id;
     private String appKey;
+    private String password;
 
     public ObjectId getId() {
         return id;
@@ -25,8 +22,16 @@ public class ClientAppKey implements Serializable {
     public String toString() {
         return "ClientAppKey{" +
                 "id=" + id +
-                ", appKey='" + appKey + '\'' +
+                ", appKey='" + appKey +'\'' +
                 '}';
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setId(ObjectId id) {
