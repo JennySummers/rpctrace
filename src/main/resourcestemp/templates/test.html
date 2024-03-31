@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<a href="/allPageVisitCount">click me</a>
+    <p id="p1">1</p>
+    <p id="p2">2</p>
+<script th:inline="javascript">
+    var pageName=[[${pageName}]];
+    var pageCount=[[${pageCount}]];
+    if(pageName && pageCount){
+        $("#p1").text(pageName.toString());
+        $("#p2").text(pageCount.toString());
+    }else{
+        $("#p1").text("111");
+        $("#p2").text("222");
+    }
+</script>
+</body>
+</html>

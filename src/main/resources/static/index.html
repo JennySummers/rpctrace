@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <!--<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <!--<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <!--<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <script>
+        (function () {
+            window.rpc = window.rpc ||[];
+            window.rpc.methods = "init identify trace getKey setSuperProperty setUserProperties".split(" ");
+            window.rpc.factory = function(b) {
+                return function() {
+                var a = Array.prototype.slice.call(arguments);
+                a.unshift(b);
+                window.rpc.push(a);
+                return window.rpc;
+            }
+        };
+            for (var i = 0; i < window.rpc.methods.length; i++) {
+                var key = window.rpc.methods[i];
+                window.rpc[key] = window.rpc.factory(key);
+            }
+            window.rpc.load = function(appKey, customConfig) {
+                if (!document.getElementById("rpc-js")) {
+                    var a = document.createElement("script");
+                    var verDate = new Date();
+                    var verStr = verDate.getFullYear().toString() + verDate.getMonth().toString() + verDate.getDate().toString();
+                    a.type = "text/javascript";
+                    a.id = "rpc-js";
+                    a.async = !0;
+                    a.src = "http://localhost:8080/js/demo.js";
+                    a.onerror = function() {};
+                    var c = document.getElementsByTagName("script")[0];
+                    c.parentNode.insertBefore(a, c);
+                    window.rpc.init(appKey, customConfig);
+                }
+            };
+            var customConfig = {
+                autoTrace:true
+            }
+            window.rpc.load("123456789",customConfig);
+        })();
+    </script>
+</head>
+<body>
+<script>
+    rpc.trace("test",{"one":"first","two":"second"});
+    document.write(navigator.userAgent);
+    //navigator.
+</script>
+    <button>hh</button>
+<input type="button" name="sss" value="eee">
+<a href="#">asdfghj</a>
+</body>
+</html>

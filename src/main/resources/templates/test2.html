@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/tableExport.js"></script>
+    <script type="text/javascript">
+        var pageName = [1,2,3,4,5];
+        var pageCount = [2,4,6,8,10];
+        $(document).ready(function () {
+            buildT();
+            TableExport.init();
+        });
+        function buildT() {
+            //绑定表格id
+            $('#table1').append("<tr id='col-1'></tr>");
+            for(i=0;i<pageName.length;i++){
+                $('#col-1') .append("<td>"+pageName[i]+ "</td>");
+            }
+            $('#table1').append("<tr id='col-2'></tr>");
+            for(i=0;i<pageCount.length;i++){
+                $('#col-2') .append("<td>"+pageCount[i]+ "</td>");
+            }
+        }
+    </script>
+    <script>
+    var TableExport = function() {
+    "use strict";
+    // function to initiate HTML Table Export
+    var runTableExportTools = function() {
+    $(".export-excel").click( function(e) {
+    e.preventDefault();
+    var exportTable = $(this).data("table");
+    var ignoreColumn = $(this).data("ignorecolumn");
+    $(exportTable).tableExport({
+    type : 'excel',
+    escape : 'false',
+    ignoreColumn : '[' + ignoreColumn + ']'
+    });
+    });
+    };
+    return {
+    // main function to initiate template pages
+    init : function() {
+    runTableExportTools();
+    //runDataTable_example2();
+    }
+    };
+    }(jQuery);
+    </script>
+
+</head>
+<body>
+<table border="1" id="countTable">
+    <tbody id="table1">
+
+    </tbody>
+</table>
+<button id="exportBtn" class="export-excel btn btn-default" data-table="#countTable" >导出</button>
+</body>
+</html>

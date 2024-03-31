@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>bar</title>
+</head>
+<body>
+<footer th:fragment="topbar">
+    <nav class="navbar">
+        <!-- Search Box-->
+        <div class="search-box">
+            <button class="dismiss"><i class="icon-close"></i></button>
+            <form id="searchForm" action="#" role="search">
+                <input type="search" placeholder="What are you looking for..." class="form-control">
+            </form>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+                <!-- Navbar Header-->
+                <div class="navbar-header">
+                    <!-- Navbar Brand --><a href="#" class="navbar-brand d-none d-sm-inline-block">
+                    <div class="brand-text d-none d-lg-inline-block"><strong>用户行为分析系统</strong></div>
+                    <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                    <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                </div>
+                <!-- Navbar Menu -->
+                <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                    <!-- Search-->
+                    <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                    <!-- Logout    -->
+                    <li class="nav-item" th:if="${session.appKey!=null}"><a href="/logout" class="nav-link logout" > <span class="d-none d-sm-inline" id="53452" th:id="loginFlag">Logout</span><i class="fa fa-sign-out"></i></a></li>
+                    <li class="nav-item" th:unless="${session.appKey!=null}"><a href="/loginPage" class="nav-link logout" > <span class="d-none d-sm-inline" id="14342" th:id="loginFlag">Login</span><i class="fa fa-sign-out"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</footer>
+<footer th:fragment="sidebar(activePage)">
+        <!-- Sidebar Header-->
+        <div class="sidebar-header d-flex align-items-center">
+            <!--<div class="avatar"><img src="../static/chartTemplate/img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>-->
+            <div class="title">
+                <h1 class="h4">你好</h1>
+                <h1 class="h4" th:text="${session.appKey}"></h1>
+
+            </div>
+        </div>
+        <!-- Sidebar Navidation Menus--><span class="heading">主菜单</span>
+        <ul class="list-unstyled">
+            <li class="active" th:class="${activePage=='index' ? 'active' : ''}"><a href="#" th:href="@{/index}"> <i class="icon-home"></i>整体 </a></li>
+            <li th:class="${activePage=='user' ? 'active' : ''}"><a href="#" th:href="@{/user}"> <i class="icon-grid"></i>用户行为</a></li>
+            <li th:class="${activePage=='page' ? 'active' : ''}"><a href="#" th:href="@{/page}"> <i class="fa fa-bar-chart"></i>页面访问 </a></li>
+            <li th:class="${activePage=='component' ? 'active' : ''}"><a href="#" th:href="@{/componentPage}"> <i class="icon-padnote"></i>元素点击 </a></li>
+            <li th:class="${activePage=='custom' ? 'active' : ''}"><a href="#" th:href="@{/custom}"> <i class="icon-padnote"></i>自定义事件</a></li>
+        </ul>
+</footer>
+</body>
+</html>

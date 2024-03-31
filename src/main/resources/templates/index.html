@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>整体</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/chartTemplate/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/chartTemplate/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/chartTemplate/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/chartTemplate/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/chartTemplate/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/chartTemplate/img/favicon.ico">
+    <!-- Jquery-->
+
+    <script src="/chartTemplate/vendor/jquery/jquery.min.js"></script>
+      <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+      <!-- Tweaks for older IEs--><!--[if lt IE 9]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <script src="/chartTemplate/js/tableExport.js"></script>
+        <script src="/chartTemplate/js/echarts.min.js"></script>
+    <!--[endif]-->
+    <script type="text/javascript">
+
+    </script>
+    <script th:inline="javascript">
+      if($("#loginFlag")!=null && $("#loginFlag").text()=="Logout") {
+        var ClickToday = [[${ClickToday}]];
+        console.log(ClickToday);
+        var LoginToday = [[${LoginToday}]];
+        console.log(LoginToday);
+      }
+    </script>
+  </head>
+  <body>
+  <!--<input id="Xarry" type="hidden" th:value="${Xarry} " />
+  <input id="Yarry" type="hidden" th:value="${Yarry}" />-->
+    <div class="page">
+      <!-- Main Navbar-->
+      <header class="header">
+        <div th:insert="~{bar::topbar}"></div>
+      </header>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <nav class="side-navbar" th:insert="~{bar::sidebar(activePage='index')}"></nav>
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">整体情况</h2>
+            </div>
+          </header>
+          <!-- Dashboard Counts Section-->
+          <section class="dashboard-counts no-padding-bottom">
+            <div class="container-fluid">
+              <div class="row bg-white has-shadow">
+                <!-- Item -->
+                <div class="col-xl-3 col-sm-6">
+                  <div class="item d-flex align-items-center">
+                    <div class="icon bg-violet"><i class="icon-user"></i></div>
+                    <div class="title"><span>总体<br>访问量</span>
+                      <div class="progress">
+                        <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-violet"></div>
+                      </div>
+                    </div>
+                    <div class="number"><strong th:text="${ClickToday}">暂无数据</strong></div>
+                  </div>
+                </div>
+                <!-- Item -->
+                <div class="col-xl-3 col-sm-6">
+                  <div class="item d-flex align-items-center">
+                    <div class="icon bg-red"><i class="icon-padnote"></i></div>
+                    <div class="title"><span>今日<br>新增用户</span>
+                      <div class="progress">
+                        <div role="progressbar" style="width: 70%; height: 4px;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-red"></div>
+                      </div>
+                    </div>
+                    <div class="number"><strong  th:text="${RegisterToday}">暂无数据</strong></div>
+                  </div>
+                </div>
+                <!-- Item -->
+                <div class="col-xl-3 col-sm-6">
+                  <div class="item d-flex align-items-center">
+                    <div class="icon bg-green"><i class="icon-bill"></i></div>
+                    <div class="title"><span>今日<br>登录用户</span>
+                      <div class="progress">
+                        <div role="progressbar" style="width: 40%; height: 4px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-green"></div>
+                      </div>
+                    </div>
+                    <div class="number"><strong th:text="${LoginToday}">暂无数据</strong></div>
+                  </div>
+                </div>
+                <!-- Item -->
+                <div class="col-xl-3 col-sm-6">
+                  <div class="item d-flex align-items-center">
+                    <div class="icon bg-orange"><i class="icon-check"></i></div>
+                    <div class="title"><span>近七日<br>活跃用户</span>
+                      <div class="progress">
+                        <div role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-orange"></div>
+                      </div>
+                    </div>
+                    <div class="number"><strong th:text="${SevenLogin}">暂无数据</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Dashboard Header Section    -->
+          <section class="dashboard-header">
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Line Chart            -->
+                <div class="chart col-lg-6 col-12">
+                  <div id="main1" style="width: 400px;height:400px;"></div>
+                  <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    //
+                      var myChart = echarts.init(document.getElementById('main1'));
+                      var test1 = "[[${test1}]]";
+                      var test2 = "[[${test2}]]";
+                      var stayTime="[[${StayTime}]]";
+                      var StayTime=stayTime.split(",");
+                      for(var i=0;i<6;i++)
+                      {
+                        StayTime[i]=parseInt(StayTime[i]);
+                      }
+                      var xAxisData = test2.split(",");
+                      var data1 = test1.split(",");
+                      var data2 = [];
+                      for (var i = 0; i < 20; i++) {
+                        if($("#loginFlag")!=null && $("#loginFlag").text()=="Logout") {
+                          data2.push(Math.ceil(Math.random() * 10));
+                        }
+                        data1[i] = parseInt(data1[i]);
+                      }
+                      var option = {
+                        title: {
+                          text: '整体登陆情况一览',
+                          x: 'center',
+                          align: 'right'
+                        },
+                        grid: {
+                          bottom: 80
+                        },
+                        toolbox: {
+                          feature: {
+                            dataZoom: {
+                              yAxisIndex: 'none'
+                            },
+                            restore: {},
+                            saveAsImage: {}
+                          }
+                        },
+                        tooltip: {
+                          trigger: 'axis',
+                          axisPointer: {
+                            type: 'cross',
+                            animation: false,
+                            label: {
+                              backgroundColor: '#505765'
+                            }
+                          }
+                        },
+                        legend: {
+                          data: ['real', 'goal'],
+                          x: 'left'
+                        },
+                        dataZoom: [{
+                          show: true,
+                          realtime: true,
+                          start: 65,
+                          end: 85
+                        },
+                          {
+                            type: 'inside',
+                            realtime: true,
+                            start: 65,
+                            end: 85
+                          }
+                        ],
+                        xAxis: [{
+                          type: 'category',
+                          boundaryGap: false,
+                          axisLine: {
+                            onZero: false
+                          },
+                          data: xAxisData
+                        }],
+                        yAxis: [{
+                          name: 'real',
+                          type: 'value',
+                          max: 20
+                        },
+                          {
+                            name: 'goal',
+                            nameLocation: 'start',
+                            max: 20,
+                            type: 'value',
+                            inverse: true
+                          }
+                        ],
+                        series: [{
+                          name: 'real',
+                          type: 'line',
+                          animation: false,
+                          areaStyle: {},
+                          lineStyle: {
+                            width: 1
+                          },
+                          markArea: {
+                            silent: true,
+                            data: [
+                              [{
+                                xAxis: xAxisData[15]
+                              }, {
+                                xAxis: xAxisData[19]
+                              }]
+                            ]
+                          },
+                          data: data1
+                        },
+                          {
+                            name: 'goal',
+                            type: 'line',
+                            yAxisIndex: 1,
+                            animation: false,
+                            areaStyle: {},
+                            lineStyle: {
+                              width: 1
+                            },
+                            markArea: {
+                              silent: true,
+                              data: [
+                                [{
+                                  xAxis: xAxisData[15]
+                                }, {
+                                  xAxis: xAxisData[19]
+                                }]
+                              ]
+                            },
+                            data: data2
+                          }
+                        ]
+                      };
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart.setOption(option);
+                    //}
+                  </script>
+                </div>
+                <div class="chart col-lg-6 col-12">
+                  <!-- Bar Chart   -->
+                  <div id="main2" style="width: 400px;height:400px;"></div>
+                  <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                      var stayTime="[[${StayTime}]]";
+                      console.log(stayTime);
+                      var StayTime=stayTime.split(",");
+                      for(var i=0;i<6;i++)
+                      {
+                        StayTime[i]=parseInt(StayTime[i]);
+                      }
+                      var myChart = echarts.init(document.getElementById('main2'));
+                      var option = {
+                        title: {
+                          text: '总体访问时长分布',
+                          x: 'center'
+                        },
+                        tooltip: {
+                          trigger: 'item',
+                          formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                          orient: 'vertical',
+                          right: 'right',
+                          data: ['小于1分钟', '小于10分钟', '小于30分钟', '小于1小时', '小于3小时','3小时以上']
+                        },
+                        series: [{
+                          name: '访问时长分布',
+                          type: 'pie',
+                          radius: '55%',
+                          center: ['50%', '60%'],
+                          data: [{
+                            value: StayTime[0],
+                            name: '小于1分钟'
+                          },
+                            {
+                              value: StayTime[1],
+                              name: '小于10分钟'
+                            },
+                            {
+                              value: StayTime[2],
+                              name: '小于30分钟'
+                            },
+                            {
+                              value: StayTime[3],
+                              name: '小于1小时'
+                            },
+                            {
+                              value: StayTime[4],
+                              name: '小于3小时'
+                            },
+                            {
+                              value: StayTime[5],
+                              name: '3小时以上'
+                            }
+                          ],
+                          itemStyle: {
+                            emphasis: {
+                              shadowBlur: 10,
+                              shadowOffsetX: 0,
+                              shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                          }
+                        }]
+                      };
+                    myChart.setOption(option);
+                  </script>
+                </div>
+              </div>
+                <script>
+                    var TableExport = function() {
+                        "use strict";
+                        // function to initiate HTML Table Export
+                        var runTableExportTools = function() {
+                            $(".export-excel").click( function(e) {
+                                e.preventDefault();
+                                var exportTable = $(this).data("table");
+                                var ignoreColumn = $(this).data("ignorecolumn");
+                                $(exportTable).tableExport({
+                                    type : 'excel',
+                                    escape : 'false',
+                                    ignoreColumn : '[' + ignoreColumn + ']'
+                                });
+                            });
+                        };
+                        return {
+                            // main function to initiate template pages
+                            init : function() {
+                                runTableExportTools();
+                                //runDataTable_example2();
+                            }
+                        };
+                    }(jQuery);
+                </script>
+
+                <table border="1" id="countTable" style="display: none">
+                    <tbody id="table1">
+
+                    </tbody>
+                </table>
+              <div class="float-right">
+                <button id="exportBtn" class="export-excel btn btn-default" data-table="#countTable" >导出</button>
+              </div>
+        </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <!--<script src="/chartTemplate/vendor/jquery/jquery.min.js"></script>-->
+    <script src="/chartTemplate/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/chartTemplate/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/chartTemplate/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/chartTemplate/vendor/chart.js/Chart.min.js"></script>
+    <script src="/chartTemplate/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/chartTemplate/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="/chartTemplate/js/front.js"></script>
+
+  </body>
+</html>

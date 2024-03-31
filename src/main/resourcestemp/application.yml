@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: RPCtrace
+  thymeleaf:
+    cache: false
+  data:
+    mongodb:
+      uri: mongodb://47.101.46.0:27017/rpc
+
